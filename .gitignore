@@ -1,0 +1,28 @@
+# Laravel
+laravel-backend/vendor/
+laravel-backend/.env
+laravel-backend/storage/*.key
+laravel-backend/storage/framework/views/*.php
+laravel-backend/storage/logs/*.log
+laravel-backend/*.sqlite
+laravel-backend/bootstrap/cache/*.php
+
+# Node
+nodejs-script/node_modules/
+nodejs-script/.env
+
+# React
+react-frontend/node_modules/
+react-frontend/build/
+react-frontend/.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
