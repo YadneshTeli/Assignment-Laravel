@@ -1,16 +1,99 @@
-# React + Vite
+# React Frontend - BeyondChats Article Manager
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Phase 3 of the BeyondChats Technical Product Manager Assignment.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Modern, responsive UI design
+- Article listing with filtering (All, Original, Enhanced)
+- Beautiful card-based layout
+- Display of article metadata (author, date)
+- Reference citations for enhanced articles
+- Loading states and error handling
+- Mobile-responsive design
 
-## React Compiler
+## Setup
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Install Dependencies
 
-## Expanding the ESLint configuration
+```bash
+npm install
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Configure Environment
+
+The `.env` file should already be configured. If not:
+
+```bash
+echo "VITE_API_URL=http://localhost:8000/api" > .env
+```
+
+### Start Development Server
+
+```bash
+npm run dev
+```
+
+The frontend will be available at `http://localhost:5173`
+
+## Build for Production
+
+```bash
+npm run build
+```
+
+The production-ready files will be in the `dist/` directory.
+
+## Features Showcase
+
+### Filtering
+- **All Articles**: Shows all articles (original + enhanced)
+- **Original**: Shows only original articles
+- **Enhanced**: Shows only AI-enhanced articles with references
+
+### Article Cards
+- Badge indicating article type (Original or Enhanced)
+- Title and metadata (author, date)
+- Content preview
+- Link to original article
+- References section (for enhanced articles)
+
+### Responsive Design
+- Adapts to mobile, tablet, and desktop screens
+- Touch-friendly interface
+- Optimized for all device sizes
+
+## Technologies Used
+
+- React 18
+- Vite 7
+- Modern CSS (Grid, Flexbox)
+- Fetch API for HTTP requests
+
+## UI Preview
+
+![BeyondChats Article Manager](https://github.com/user-attachments/assets/13a8d798-57f5-4338-9660-2821d53c2eb7)
+
+## Project Structure
+
+```
+react-frontend/
+├── src/
+│   ├── App.jsx          # Main application component
+│   ├── App.css          # Application styling
+│   ├── main.jsx         # Application entry point
+│   └── index.css        # Global styles
+├── public/
+│   └── vite.svg         # Static assets
+├── index.html           # HTML template
+└── vite.config.js       # Vite configuration
+```
+
+## API Integration
+
+The frontend connects to the Laravel backend API at `http://localhost:8000/api` by default.
+
+Endpoints used:
+- `GET /api/articles` - Fetch all articles
+- Displays both original and enhanced articles
+- Filters articles based on `is_updated` field
