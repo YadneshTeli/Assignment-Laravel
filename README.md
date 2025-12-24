@@ -21,11 +21,11 @@ A complete full-stack application demonstrating article management with AI-power
                      │ API Calls
                      ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                  NodeJS Enhancement Script                  │
+│           NodeJS Enhancement Application                    │
 │  1. Fetch latest article from Laravel API                   │
 │  2. Search Google for article title                         │
 │  3. Scrape top 2 search results                             │
-│  4. Use LLM to enhance article content                      │
+│  4. Use Google Gemini AI to enhance article content         │
 │  5. Publish enhanced article with references                │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -45,8 +45,12 @@ Assignment-Laravel/
 │   │   └── api.php          # API routes
 │   └── .env                 # Environment configuration
 │
-├── nodejs-script/           # NodeJS enhancement script
-│   ├── index.js             # Main script
+├── nodejs-script/           # NodeJS enhancement application
+│   ├── config/              # Configuration files
+│   ├── src/
+│   │   ├── app.js           # Main application class
+│   │   └── services/        # Service modules
+│   ├── main.js              # Application entry point
 │   ├── package.json         # Dependencies
 │   └── .env.example         # Environment template
 │
@@ -99,7 +103,7 @@ php artisan serve
 
 The API will be available at `http://localhost:8000/api`
 
-### Phase 2: NodeJS Script Setup
+### Phase 2: NodeJS Enhancement Application Setup
 
 ```bash
 # Navigate to NodeJS directory
@@ -114,17 +118,17 @@ cp .env.example .env
 # Optional: Configure API keys in .env
 # - GOOGLE_SEARCH_API_KEY (optional - uses mock data if not provided)
 # - GOOGLE_SEARCH_ENGINE_ID (optional)
-# - OPENAI_API_KEY (optional - uses mock enhancement if not provided)
+# - GEMINI_API_KEY (optional - uses mock enhancement if not provided)
 
-# Run the enhancement script
+# Run the enhancement application
 npm start
 ```
 
-The script will:
+The application will:
 1. Fetch the latest article from Laravel API
 2. Search Google (or use mock data)
 3. Scrape reference articles
-4. Enhance content using LLM (or mock enhancement)
+4. Enhance content using Google Gemini AI (or mock enhancement)
 5. Publish enhanced article back to Laravel
 
 ### Phase 3: React Frontend Setup
@@ -186,13 +190,15 @@ The frontend will be available at `http://localhost:5173`
 - ✅ Proper error handling and validation
 - ✅ CORS configuration for frontend access
 
-### Phase 2: NodeJS Script
+### Phase 2: NodeJS Enhancement Application
+- ✅ Modular service-based architecture
 - ✅ Fetch articles from Laravel API
 - ✅ Google Search integration (with mock fallback)
 - ✅ Web scraping with Cheerio
-- ✅ LLM integration for content enhancement (with mock fallback)
+- ✅ Google Gemini AI integration for content enhancement (with mock fallback)
 - ✅ Reference tracking and citation
 - ✅ Graceful fallbacks when APIs are unavailable
+- ✅ Comprehensive error handling
 
 ### Phase 3: React Frontend
 - ✅ Modern, responsive UI design
@@ -217,13 +223,13 @@ DB_CONNECTION=sqlite
 DB_DATABASE=database.sqlite
 ```
 
-### NodeJS Script (.env)
+### NodeJS Enhancement Application (.env)
 
 ```env
 LARAVEL_API_URL=http://localhost:8000/api
 GOOGLE_SEARCH_API_KEY=your_google_api_key_here
 GOOGLE_SEARCH_ENGINE_ID=your_search_engine_id_here
-OPENAI_API_KEY=your_openai_api_key_here
+GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
 ### React Frontend (.env)
@@ -274,16 +280,19 @@ Open your browser to `http://localhost:5173` and verify:
 1. **Laravel 11**: Latest version with improved performance and modern PHP features
 2. **SQLite**: Easy setup, no additional database server required
 3. **Vite + React**: Modern, fast development experience
-4. **Cheerio**: Lightweight and efficient for web scraping
-5. **Axios**: Reliable HTTP client for both NodeJS and browser
+4. **Google Gemini AI**: Free-tier LLM for intelligent content enhancement
+5. **Cheerio**: Lightweight and efficient for web scraping
+6. **Axios**: Reliable HTTP client for both NodeJS and browser
 
 ### Implementation Notes
 
 1. **Article Scraping**: Implemented with fallback to sample data since beyondchats.com may not be accessible in all environments
 2. **API Keys**: Made optional with mock implementations to allow testing without external API access
-3. **CORS**: Configured to allow local development between different ports
-4. **Error Handling**: Comprehensive error handling with user-friendly messages
-5. **Responsive Design**: Mobile-first approach with CSS Grid and Flexbox
+3. **Gemini AI**: Switched from OpenAI to Google Gemini for better accessibility and free tier
+4. **Modular Architecture**: NodeJS application restructured with service-based design for better maintainability
+5. **CORS**: Configured to allow local development between different ports
+6. **Error Handling**: Comprehensive error handling with user-friendly messages
+7. **Responsive Design**: Mobile-first approach with CSS Grid and Flexbox
 
 ## 📝 Future Enhancements
 
@@ -304,7 +313,7 @@ If given more time, these features could be added:
 
 1. **Article Scraping**: Real scraping from beyondchats.com may fail due to network restrictions; sample data is used as fallback
 2. **Google Search**: Requires API keys for actual search; uses mock data otherwise
-3. **LLM Enhancement**: Requires OpenAI API key; uses template-based enhancement otherwise
+3. **Gemini AI Enhancement**: Requires Google Gemini API key; uses template-based enhancement otherwise (free tier available)
 4. **No Authentication**: API is open without authentication
 5. **Single Database**: Uses SQLite for simplicity; production would use PostgreSQL/MySQL
 
@@ -321,8 +330,8 @@ Assignment submission for BeyondChats Technical Product Manager position
 ## 🔗 Repository Structure
 
 This is a monorepo containing all three phases:
-- `laravel-backend/` - Phase 1
-- `nodejs-script/` - Phase 2
-- `react-frontend/` - Phase 3
+- `laravel-backend/` - Phase 1: Laravel API
+- `nodejs-script/` - Phase 2: NodeJS Enhancement Application (Google Gemini AI)
+- `react-frontend/` - Phase 3: React Frontend
 
 Each phase can be run independently, but they work together to provide the complete functionality.
