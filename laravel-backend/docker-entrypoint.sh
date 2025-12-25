@@ -9,13 +9,22 @@ if [ -z "$APP_KEY" ]; then
     php artisan key:generate --force
 fi
 
-# Run database migrations
+# Run database migrations with verbose output
 echo "Running database migrations..."
-php artisan migrate --force
+php artisan migrate --force --verbose || {
+    echo "Migration failed! Check database connection."
+    exit 1
+}
+
+# Verify table exists before seeding
+echo "Verifying articles table exists..."
+php artisan tinker --execute="echo Schema::hasTable('articles') ? 'Table exists' : 'Table missing';" || true
 
 # Seed database if empty
 echo "Seeding database..."
-php artisan db:seed --force || true
+php artisan db:seed --force || {
+    echo "Seeding failed, but continuing..."
+}
 
 # Cache configuration
 echo "Caching configuration..."
