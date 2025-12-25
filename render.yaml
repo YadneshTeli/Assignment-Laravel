@@ -34,8 +34,6 @@ services:
   - type: web
     name: beyondchats-frontend
     env: static
-    region: oregon
-    plan: free
     rootDir: react-frontend
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
@@ -52,7 +50,6 @@ services:
     name: article-enhancer
     env: node
     region: oregon
-    plan: free
     rootDir: nodejs-script
     schedule: "0 */6 * * *"  # Every 6 hours
     buildCommand: npm install
