@@ -23,6 +23,12 @@ php artisan migrate:fresh --force || {
     exit 1
 }
 
+# Small delay to ensure connection state is consistent
+sleep 1
+
+echo "Migration status:"
+php artisan migrate:status || true
+
 # Seed database
 echo "Seeding database..."
 php artisan db:seed --force || {
