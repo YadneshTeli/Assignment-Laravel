@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     libpq-dev \
+    libicu-dev \
     zip \
     unzip \
     sqlite3 \
@@ -17,8 +18,8 @@ RUN apt-get update && apt-get install -y \
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions (include Postgres)
-RUN docker-php-ext-install pdo pdo_sqlite pdo_pgsql mbstring exif pcntl bcmath gd
+# Install PHP extensions (include Postgres and intl)
+RUN docker-php-ext-install pdo pdo_sqlite pdo_pgsql mbstring exif pcntl bcmath gd intl
 
 # Get Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

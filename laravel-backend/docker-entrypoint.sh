@@ -11,7 +11,7 @@ fi
 
 # Check if database is accessible
 echo "Testing database connection..."
-php artisan db:show || {
+php artisan tinker --execute="DB::connection()->getPdo(); echo 'DB connected';" || {
     echo "Database connection failed! Check DB_* environment variables."
     exit 1
 }
