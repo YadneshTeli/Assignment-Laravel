@@ -45,17 +45,20 @@ RUN mkdir -p /var/www/html/database && \
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN composer install --optimize-autoloader --no-dev
 
-# Configure Apache
+# Configure Apache with explicit vhost for Laravel public
 RUN a2enmod rewrite
-RUN sed -i 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf
+RUN printf '<VirtualHost *:80>\n\
+    ServerName localhost\n\
+    DocumentRoot /var/www/html/public\n\
+    <Directory /var/www/html/public>\n\
+        Options Indexes FollowSymLinks\n\
+        AllowOverride All\n\
+        Require all granted\n\
+    </Directory>\n\
+    ErrorLog ${APACHE_LOG_DIR}/error.log\n\
+    CustomLog ${APACHE_LOG_DIR}/access.log combined\n\
+</VirtualHost>\n' > /etc/apache2/sites-available/000-default.conf
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
-
-# Copy custom Apache config for Laravel
-RUN echo '<Directory /var/www/html/public>\n\
-    Options Indexes FollowSymLinks\n\
-    AllowOverride All\n\
-    Require all granted\n\
-</Directory>' >> /etc/apache2/sites-available/000-default.conf
 
 # Run migrations and seed on container start
 COPY docker-entrypoint.sh /usr/local/bin/
