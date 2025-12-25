@@ -1,0 +1,68 @@
+services:
+  # Laravel Backend API
+  - type: web
+    name: beyondchats-backend
+    env: docker
+    region: oregon
+    plan: free
+    rootDir: laravel-backend
+    dockerfilePath: ./laravel-backend/Dockerfile
+    healthCheckPath: /api/articles
+    envVars:
+      - key: APP_NAME
+        value: BeyondChats
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_KEY
+        generateValue: true
+      - key: LOG_CHANNEL
+        value: stack
+      - key: LOG_LEVEL
+        value: debug
+      - key: DB_CONNECTION
+        value: sqlite
+      - key: SESSION_DRIVER
+        value: cookie
+      - key: QUEUE_CONNECTION
+        value: sync
+      - key: CACHE_STORE
+        value: file
+
+  # React Frontend
+  - type: web
+    name: beyondchats-frontend
+    env: static
+    region: oregon
+    plan: free
+    rootDir: react-frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=3600
+    envVars:
+      - key: VITE_API_URL
+        value: https://beyondchats-backend.onrender.com/api
+
+  # Node.js Article Enhancer (Cron Job)
+  - type: cron
+    name: article-enhancer
+    env: node
+    region: oregon
+    plan: free
+    rootDir: nodejs-script
+    schedule: "0 */6 * * *"  # Every 6 hours
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: LARAVEL_API_URL
+        value: https://beyondchats-backend.onrender.com/api
+      - key: GEMINI_API_KEY
+        sync: false  # Set this in Render dashboard
+      - key: GOOGLE_SEARCH_API_KEY
+        sync: false  # Set this in Render dashboard
+      - key: GOOGLE_SEARCH_ENGINE_ID
+        sync: false  # Set this in Render dashboard
