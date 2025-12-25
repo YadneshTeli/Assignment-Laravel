@@ -28,21 +28,22 @@ WORKDIR /var/www/html
 # Copy application files
 COPY . .
 
+# Ensure storage and cache directories exist before Composer scripts run
+RUN mkdir -p storage/framework/{sessions,views,cache} \
+    storage/logs \
+    bootstrap/cache && \
+    chown -R www-data:www-data storage bootstrap/cache && \
+    chmod -R 775 storage bootstrap/cache
+
 # Create SQLite database directory with proper permissions
 RUN mkdir -p /var/www/html/database && \
     touch /var/www/html/database/database.sqlite && \
     chown -R www-data:www-data /var/www/html/database && \
     chmod -R 775 /var/www/html/database
 
-# Install dependencies
+# Install dependencies (runs Composer scripts that require cache dir)
+ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN composer install --optimize-autoloader --no-dev
-
-# Create storage and bootstrap/cache directories
-RUN mkdir -p storage/framework/{sessions,views,cache} \
-    storage/logs \
-    bootstrap/cache && \
-    chown -R www-data:www-data storage bootstrap/cache && \
-    chmod -R 775 storage bootstrap/cache
 
 # Configure Apache
 RUN a2enmod rewrite
