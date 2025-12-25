@@ -16,17 +16,19 @@ php artisan db:show || {
     exit 1
 }
 
-# Run database migrations - use fresh on first deploy
+# Run database migrations
 echo "Running database migrations..."
-if ! php artisan migrate:status 2>/dev/null | grep -q "2024_01_01_000000_create_articles_table"; then
-    echo "Fresh migration needed..."
-    php artisan migrate:fresh --force || {
-        echo "Migration failed!"
-        exit 1
-    }
-else
-    php artisan migrate --force || {
-        echo "Migration failed!"
+php artisan migrate --force || {
+    echo "Migration failed!"
+    exit 1
+}
+
+# Ensure articles table exists; apply specific migration if needed
+echo "Verifying articles migration status..."
+if ! php artisan migrate:status | grep -E "2024_01_01_000000_create_articles_table" | grep -q "Yes"; then
+    echo "Applying articles migration explicitly..."
+    php artisan migrate --path=database/migrations/2024_01_01_000000_create_articles_table.php --force || {
+        echo "Specific migration failed!"
         exit 1
     }
 fi
