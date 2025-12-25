@@ -9,18 +9,29 @@ if [ -z "$APP_KEY" ]; then
     php artisan key:generate --force
 fi
 
-# Run database migrations with verbose output
-echo "Running database migrations..."
-php artisan migrate --force --verbose || {
-    echo "Migration failed! Check database connection."
+# Check if database is accessible
+echo "Testing database connection..."
+php artisan db:show || {
+    echo "Database connection failed! Check DB_* environment variables."
     exit 1
 }
 
-# Verify table exists before seeding
-echo "Verifying articles table exists..."
-php artisan tinker --execute="echo Schema::hasTable('articles') ? 'Table exists' : 'Table missing';" || true
+# Run database migrations - use fresh on first deploy
+echo "Running database migrations..."
+if ! php artisan migrate:status 2>/dev/null | grep -q "2024_01_01_000000_create_articles_table"; then
+    echo "Fresh migration needed..."
+    php artisan migrate:fresh --force || {
+        echo "Migration failed!"
+        exit 1
+    }
+else
+    php artisan migrate --force || {
+        echo "Migration failed!"
+        exit 1
+    }
+fi
 
-# Seed database if empty
+# Seed database
 echo "Seeding database..."
 php artisan db:seed --force || {
     echo "Seeding failed, but continuing..."
